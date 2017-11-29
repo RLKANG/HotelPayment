@@ -6,18 +6,22 @@
   <link rel="stylesheet" type="text/css" href="basic.css">
 </head>
 <body>
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+  
   <h1> <img src="room.gif"> Rent Room </h1>
   <p>2 bedroom and 1 washroom</p>
-  <form>
-	<label> Amount: </label> <input type="text" id="amount"> <br></br>
-	<label> Notes: </label> <input type="text" id ="notes"> <br></br>
-	<input type="submit" id="button">
+  
+  <form action="/charge" method="POST" id="form">
+	Amount: <input type="text" name ="amount" id="amount"> <br></br>
+	Notes: <input type="text" name ="notes" id ="notes"> <br></br>
+	<input type="hidden" name ="stripeToken" id="stripeToken">
+	<input type="hidden" name ="email" id="email">
   </form>
+  
+  <button id="submit_button">Submit</button>
   <br></br>
   
-  <script src="https://checkout.stripe.com/checkout.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
   <script>
   var handler = StripeCheckout.configure({
     key: '{{process.env.STRIPE_PUBLIC}}',
@@ -25,14 +29,12 @@
     name: 'Hotel Room',
     description: 'One-time payment',
     token: function(token) {
-      $.ajax({
-        type: "POST",
-        url: "/charge",
-        data: {stripeToken: token.id}
-      });
+	  document.getElementById('stripeToken').value = token.id;
+	  document.getElementById('email').value = token.email;
+	  document.getElementById('form').submit();
     }
    })
-  document.getElementById('button').addEventListener('click', function(e) {  
+  document.getElementById('submit_button').addEventListener('click', function(e) {  
   e.preventDefault();
 
   //$('#error_explanation').html('');
@@ -57,10 +59,10 @@
     })
   }
   });
-  // Close Checkout on page navigation
-  //$(window).on('popstate', function() {
-    //handler.close();
-  //});
+   //Close Checkout on page navigation
+  $(window).on('popstate', function() {
+    handler.close();
+  });
   </script>
   
 </body>
