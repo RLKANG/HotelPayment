@@ -15,6 +15,7 @@ module.exports = (req) => {
   //TODO
   //console.log(new Date().getUTCMinutes());
   //console.log(process.env.STRIPE_COST);
+  console.log("Hello");
 
   // now we create a charge which returns a `promise`
   // so we need to make sure we correctly handle
@@ -22,7 +23,8 @@ module.exports = (req) => {
   // function (and we'll see it later)
   return stripe.charges.create({
     // ensures we send a number, and not a string
-    amount: parseInt(process.env.STRIPE_COST, 10),
+    //amount: parseInt(process.env.STRIPE_COST, 10),
+	amount: 4000,
     currency: process.env.STRIPE_CCY,
     source: token,
     description: 'Room', // remember to change this!
