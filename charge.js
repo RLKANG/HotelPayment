@@ -18,10 +18,13 @@ module.exports = (req) => {
   amount = amount.replace(/\$/g, '').replace(/\,/g, '')
   amount = parseFloat(amount);
   if (isNaN(amount)) {
+	  //throw a Stripe charge error
 	  throw "Charge not completed. Please enter a valid amount in USD ($)";
   }
-  else if (amount < 5.00) {
-	  throw "Charge not completed. Donation amount must be at least $5";
+  amount = amount * 100;
+  if (amount < 500) {
+	  //throw a Stripe charge error
+	  throw "Charge not completed. Payment amount must be at least $5";
   }
 
   // now we create a charge which returns a `promise`
