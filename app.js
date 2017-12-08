@@ -39,20 +39,52 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // the router
 
 // GET /
-app.get('/', (req, res) => {
-  res.render('index');
+app.get('/', function (req, res) {
+	res.render('index');
 });
 
 // POST /charge
-app.post('/charge', (req, res, next) => {
-  charge(req).then(data => {
-    res.render('thanks');
-  }).catch(error => {
-    res.render('error', error);
-  });
+app.post('/charge', function (req, res, next) {
+	//verify user-specified amount
+	try {
+		var amount = req.body.amount;
+		amount = amount.replace(/\$/g, '').replace(/\,/g, '')
+		amount = parseFloat(amount);
+	
+		if (isNaN(amount)) {
+			throw "Charge not completed. Please enter a valid amount in USD ($)";
+		}
+	
+		amount = amount * 100;	
+		if (amount < 500) {
+			throw "Charge not completed. Payment amount must be at least $5";
+		}
+	}
+	catch (error) {
+		res.render('error', {message: error});
+		return;
+	}
+	
+	charge(req)
+	.then(function (data) {
+		res.render('thanks');
+	})
+	.catch(function (error) {
+		res.render('error', error);
+	});
+});
+
+// POST /webhook
+app.post('/webhook', function (req, res) {
+	//Retrieve the request's body and parse it as JSON
+	var event_json = JSON.parse(req.body);
+	
+	console.log(event_json);
+	
+	res.send(200);
 });
 
 // start
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3000, function () {
   console.log('Listening');
 });

@@ -13,19 +13,6 @@ module.exports = (req) => {
   var email = req.body.email;
   var amount = req.body.amount;
   var notes = req.body.notes;
-  
-  //verify user-specified amount
-  amount = amount.replace(/\$/g, '').replace(/\,/g, '')
-  amount = parseFloat(amount);
-  if (isNaN(amount)) {
-	  //throw a Stripe charge error
-	  throw "Charge not completed. Please enter a valid amount in USD ($)";
-  }
-  amount = amount * 100;
-  if (amount < 500) {
-	  //throw a Stripe charge error
-	  throw "Charge not completed. Payment amount must be at least $5";
-  }
 
   // now we create a charge which returns a `promise`
   // so we need to make sure we correctly handle
