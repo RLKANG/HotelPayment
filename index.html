@@ -8,7 +8,8 @@
 <body>
   <script src="https://checkout.stripe.com/checkout.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
-  
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+
   <h1> <img src="room.gif"> Rent Room </h1>
   <p>2 bedroom and 1 washroom</p>
   
@@ -17,6 +18,7 @@
 	Notes: <input type="text" name ="notes" id ="notes"> <br></br>
 	<input type="hidden" name ="stripeToken" id="stripeToken">
 	<input type="hidden" name ="email" id="email">
+        <div class="g-recaptcha" data-sitekey="6LfsfTwUAAAAANHFFlds2YeuwyDVMKGT7XSDqO0k"></div>
   </form>
   
   <button id="submit_button">Submit</button>
@@ -49,7 +51,7 @@
 	alert("Please enter a valid amount");
   }
   else if (amount < 5.00) {
-    //$('#error_explanation').html('<p>Payment amount must be at least $5.</p>');
+    //$('#error_explanation').html('<p>Donation amount must be at least $5.</p>');
 	alert("Please enter an amount >= $5.00");
   }
   else {

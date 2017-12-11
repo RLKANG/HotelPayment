@@ -77,14 +77,14 @@ app.post('/charge', function (req, res, next) {
 // POST /webhook
 app.post('/webhook', function (req, res) {
 	//Retrieve the request's body and parse it as JSON
-	var event_json = JSON.parse(req.body);
+	//var event_json = JSON.parse(req.body);
 	
-	console.log(event_json);
+	console.log(req.body);
 	
-	res.send(200);
+	res.sendStatus(200);
 });
 
 // start
-app.listen(process.env.PORT || 3000, function () {
+app.listen(process.env.PORT || 80, function () {
   console.log('Listening');
 });

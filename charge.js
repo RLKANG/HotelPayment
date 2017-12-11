@@ -11,7 +11,7 @@ module.exports = (req) => {
   // to the `action` URL in our form
   var token = req.body.stripeToken;
   var email = req.body.email;
-  var amount = req.body.amount;
+  var amount = req.body.amount * 100;
   var notes = req.body.notes;
 
   // now we create a charge which returns a `promise`
